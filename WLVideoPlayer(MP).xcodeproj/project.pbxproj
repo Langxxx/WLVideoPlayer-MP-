@@ -1,0 +1,292 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		772F0A1B1C7D585900C6A69F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772F0A1A1C7D585900C6A69F /* AppDelegate.swift */; };
+		772F0A1D1C7D585900C6A69F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772F0A1C1C7D585900C6A69F /* ViewController.swift */; };
+		772F0A201C7D585900C6A69F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 772F0A1E1C7D585900C6A69F /* Main.storyboard */; };
+		772F0A221C7D585900C6A69F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 772F0A211C7D585900C6A69F /* Assets.xcassets */; };
+		772F0A251C7D585900C6A69F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 772F0A231C7D585900C6A69F /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		772F0A171C7D585900C6A69F /* WLVideoPlayer(MP).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WLVideoPlayer(MP).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		772F0A1A1C7D585900C6A69F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		772F0A1C1C7D585900C6A69F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		772F0A1F1C7D585900C6A69F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		772F0A211C7D585900C6A69F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		772F0A241C7D585900C6A69F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		772F0A261C7D585900C6A69F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		772F0A141C7D585900C6A69F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		772F0A0E1C7D585900C6A69F = {
+			isa = PBXGroup;
+			children = (
+				772F0A191C7D585900C6A69F /* WLVideoPlayer(MP) */,
+				772F0A181C7D585900C6A69F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		772F0A181C7D585900C6A69F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				772F0A171C7D585900C6A69F /* WLVideoPlayer(MP).app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		772F0A191C7D585900C6A69F /* WLVideoPlayer(MP) */ = {
+			isa = PBXGroup;
+			children = (
+				772F0A1A1C7D585900C6A69F /* AppDelegate.swift */,
+				772F0A1C1C7D585900C6A69F /* ViewController.swift */,
+				772F0A1E1C7D585900C6A69F /* Main.storyboard */,
+				772F0A211C7D585900C6A69F /* Assets.xcassets */,
+				772F0A231C7D585900C6A69F /* LaunchScreen.storyboard */,
+				772F0A261C7D585900C6A69F /* Info.plist */,
+			);
+			path = "WLVideoPlayer(MP)";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		772F0A161C7D585900C6A69F /* WLVideoPlayer(MP) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 772F0A291C7D585900C6A69F /* Build configuration list for PBXNativeTarget "WLVideoPlayer(MP)" */;
+			buildPhases = (
+				772F0A131C7D585900C6A69F /* Sources */,
+				772F0A141C7D585900C6A69F /* Frameworks */,
+				772F0A151C7D585900C6A69F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "WLVideoPlayer(MP)";
+			productName = "WLVideoPlayer(MP)";
+			productReference = 772F0A171C7D585900C6A69F /* WLVideoPlayer(MP).app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		772F0A0F1C7D585900C6A69F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = wl;
+				TargetAttributes = {
+					772F0A161C7D585900C6A69F = {
+						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = NLUGDBP35M;
+					};
+				};
+			};
+			buildConfigurationList = 772F0A121C7D585900C6A69F /* Build configuration list for PBXProject "WLVideoPlayer(MP)" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 772F0A0E1C7D585900C6A69F;
+			productRefGroup = 772F0A181C7D585900C6A69F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				772F0A161C7D585900C6A69F /* WLVideoPlayer(MP) */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		772F0A151C7D585900C6A69F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				772F0A251C7D585900C6A69F /* LaunchScreen.storyboard in Resources */,
+				772F0A221C7D585900C6A69F /* Assets.xcassets in Resources */,
+				772F0A201C7D585900C6A69F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		772F0A131C7D585900C6A69F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				772F0A1D1C7D585900C6A69F /* ViewController.swift in Sources */,
+				772F0A1B1C7D585900C6A69F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		772F0A1E1C7D585900C6A69F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				772F0A1F1C7D585900C6A69F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		772F0A231C7D585900C6A69F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				772F0A241C7D585900C6A69F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		772F0A271C7D585900C6A69F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		772F0A281C7D585900C6A69F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		772F0A2A1C7D585900C6A69F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "WLVideoPlayer(MP)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "lyedu.cn.WLVideoPlayer-MP-";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		772F0A2B1C7D585900C6A69F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "WLVideoPlayer(MP)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "lyedu.cn.WLVideoPlayer-MP-";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		772F0A121C7D585900C6A69F /* Build configuration list for PBXProject "WLVideoPlayer(MP)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				772F0A271C7D585900C6A69F /* Debug */,
+				772F0A281C7D585900C6A69F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		772F0A291C7D585900C6A69F /* Build configuration list for PBXNativeTarget "WLVideoPlayer(MP)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				772F0A2A1C7D585900C6A69F /* Debug */,
+				772F0A2B1C7D585900C6A69F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 772F0A0F1C7D585900C6A69F /* Project object */;
+}
