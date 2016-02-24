@@ -9,8 +9,7 @@
 import UIKit
 import SDWebImage
 
-
-
+let PlayerButtonDidClikNotification = "PlayerButtonDidClikNotification"
 class VideoCell: UITableViewCell {
  
     @IBOutlet weak var titleLabel: UILabel!
@@ -26,23 +25,27 @@ class VideoCell: UITableViewCell {
     
     var newsModel: VideoNewsModel! {
         didSet {
-            self.setupSubView()
+            setupSubView()
         }
     }
     
     func setupSubView() {
-        
-        self.titleLabel.text = self.newsModel.title
-        self.descriptionLabel.text = self.newsModel.description
-        self.coverImageView.sd_setImageWithURL(NSURL(string: self.newsModel.cover), placeholderImage: UIImage(named: "placeholder"))
-        self.timeLabel.text = String(format:"%02d:%02d", self.newsModel.length/60, self.newsModel.length%60)
-        self.playCountLabel.text = String(self.newsModel.playCount)
-        self.replyCountButton.setTitle(String(self.newsModel.replyCount), forState: .Normal)
+        titleLabel.text = newsModel.title
+        descriptionLabel.text = newsModel.description
+        coverImageView.sd_setImageWithURL(NSURL(string: newsModel.cover), placeholderImage: UIImage(named: "placeholder"))
+        timeLabel.text = String(format:"%02d:%02d", newsModel.length/60, newsModel.length%60)
+        playCountLabel.text = String(newsModel.playCount)
+        replyCountButton.setTitle(String(newsModel.replyCount), forState: .Normal)
     }
     /**
      当点击播放按钮的时候，通知控制器进行播放操作
      */
     @IBAction func playBtnClik(sender: UIButton) {
-
+        let userInfo = [
+            "inView" : self.playerView,
+            "url" : self.newsModel.mp4_url,
+            "cell" : self
+        ]
+        NSNotificationCenter.defaultCenter().postNotificationName(PlayerButtonDidClikNotification, object: self, userInfo: userInfo)
     }
 }
