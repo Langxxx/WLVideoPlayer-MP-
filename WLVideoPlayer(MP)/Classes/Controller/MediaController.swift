@@ -27,6 +27,9 @@ class MediaController: UIViewController {
     var playingCell: VideoCell?
     /// 播放视频的那个cell的索引，解决重用问题
     var playingCellIndexPath: NSIndexPath?
+    lazy var controlView = {
+        return NSBundle.mainBundle().loadNibNamed("PlayerControlView", owner: nil, options: nil).last as! PlayerControlView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,6 +81,7 @@ class MediaController: UIViewController {
         playingCellIndexPath = tableView.indexPathForCell(playingCell)
         
         playingPlayerView = WLVideoPlayerView(url: NSURL(string: urlStr)!)
+        playingPlayerView?.customControlView = controlView
         playingPlayerView?.placeholderView = UIImageView(image: UIImage(named: "placeholder"))
         playingPlayerView?.playInView(inView)
     }

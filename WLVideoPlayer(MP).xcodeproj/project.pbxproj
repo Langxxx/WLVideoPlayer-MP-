@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7719D0E71C7D986900428757 /* PlayerControlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7719D0E61C7D986900428757 /* PlayerControlView.xib */; };
+		7719D0E91C7D9AB200428757 /* PlayerControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7719D0E81C7D9AB200428757 /* PlayerControlView.swift */; };
+		7719D0EB1C7EAA4D00428757 /* WLPlayerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7719D0EA1C7EAA4D00428757 /* WLPlayerHandler.swift */; };
+		7719D0F11C7EAF8F00428757 /* WLBasePlayerControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7719D0F01C7EAF8F00428757 /* WLBasePlayerControlView.swift */; };
 		772F0A1B1C7D585900C6A69F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772F0A1A1C7D585900C6A69F /* AppDelegate.swift */; };
 		772F0A201C7D585900C6A69F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 772F0A1E1C7D585900C6A69F /* Main.storyboard */; };
 		772F0A221C7D585900C6A69F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 772F0A211C7D585900C6A69F /* Assets.xcassets */; };
@@ -21,6 +25,10 @@
 
 /* Begin PBXFileReference section */
 		58AC2AC627157960576E0B04 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		7719D0E61C7D986900428757 /* PlayerControlView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerControlView.xib; sourceTree = "<group>"; };
+		7719D0E81C7D9AB200428757 /* PlayerControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerControlView.swift; sourceTree = "<group>"; };
+		7719D0EA1C7EAA4D00428757 /* WLPlayerHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WLPlayerHandler.swift; sourceTree = "<group>"; };
+		7719D0F01C7EAF8F00428757 /* WLBasePlayerControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WLBasePlayerControlView.swift; sourceTree = "<group>"; };
 		772F0A171C7D585900C6A69F /* WLVideoPlayer(MP).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WLVideoPlayer(MP).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		772F0A1A1C7D585900C6A69F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		772F0A1F1C7D585900C6A69F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -119,6 +127,8 @@
 			isa = PBXGroup;
 			children = (
 				772F0A3A1C7D5E3E00C6A69F /* VideoCell.swift */,
+				7719D0E61C7D986900428757 /* PlayerControlView.xib */,
+				7719D0E81C7D9AB200428757 /* PlayerControlView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -127,6 +137,8 @@
 			isa = PBXGroup;
 			children = (
 				772F0A3C1C7D629A00C6A69F /* WLVideoPlayerView.swift */,
+				7719D0EA1C7EAA4D00428757 /* WLPlayerHandler.swift */,
+				7719D0F01C7EAF8F00428757 /* WLBasePlayerControlView.swift */,
 			);
 			path = WLVideoPlayer;
 			sourceTree = "<group>";
@@ -213,6 +225,7 @@
 				772F0A251C7D585900C6A69F /* LaunchScreen.storyboard in Resources */,
 				772F0A221C7D585900C6A69F /* Assets.xcassets in Resources */,
 				772F0A201C7D585900C6A69F /* Main.storyboard in Resources */,
+				7719D0E71C7D986900428757 /* PlayerControlView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,7 +288,10 @@
 				772F0A3B1C7D5E3E00C6A69F /* VideoCell.swift in Sources */,
 				772F0A391C7D5E0600C6A69F /* MediaController.swift in Sources */,
 				772F0A371C7D5D4900C6A69F /* DataTool.swift in Sources */,
+				7719D0E91C7D9AB200428757 /* PlayerControlView.swift in Sources */,
 				772F0A1B1C7D585900C6A69F /* AppDelegate.swift in Sources */,
+				7719D0F11C7EAF8F00428757 /* WLBasePlayerControlView.swift in Sources */,
+				7719D0EB1C7EAA4D00428757 /* WLPlayerHandler.swift in Sources */,
 				772F0A341C7D5CDE00C6A69F /* MediaModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
