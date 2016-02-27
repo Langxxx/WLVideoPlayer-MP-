@@ -72,7 +72,7 @@
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_rightslider" translatesAutoresizingMaskIntoConstraints="NO" id="gYv-dj-cde">
                                     <rect key="frame" x="10" y="19" width="435" height="2"/>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:31 / 01:12" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lSq-NG-rgG">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00 / 00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lSq-NG-rgG">
                                     <rect key="frame" x="345" y="20" width="100" height="20"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="20" id="CCN-jx-s8W"/>
@@ -82,10 +82,10 @@
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_playableslider" translatesAutoresizingMaskIntoConstraints="NO" id="Uwb-67-Sbg">
-                                    <rect key="frame" x="0.0" y="20" width="20" height="1"/>
+                                <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_playableslider" translatesAutoresizingMaskIntoConstraints="NO" id="Uwb-67-Sbg">
+                                    <rect key="frame" x="0.0" y="20" width="0.0" height="1"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="20" id="CBx-rN-AgY"/>
+                                        <constraint firstAttribute="width" id="CBx-rN-AgY"/>
                                     </constraints>
                                 </imageView>
                             </subviews>
@@ -132,7 +132,13 @@
                 <constraint firstItem="6FK-pp-MXW" firstAttribute="height" secondItem="Lad-rG-Z4V" secondAttribute="height" id="w9h-9D-kyt"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="470" y="205.5"/>
+            <connections>
+                <outlet property="currentSliderConstraint" destination="Zxc-tp-4KM" id="Nu1-W6-b07"/>
+                <outlet property="playableSliderConstraint" destination="CBx-rN-AgY" id="U3V-lH-fRF"/>
+                <outlet property="sliderViewConstraint" destination="mJB-bX-QoB" id="4uh-X6-A4N"/>
+                <outlet property="timeLabel" destination="lSq-NG-rgG" id="y3k-5N-eGy"/>
+            </connections>
+            <point key="canvasLocation" x="448" y="194.5"/>
         </view>
     </objects>
     <resources>

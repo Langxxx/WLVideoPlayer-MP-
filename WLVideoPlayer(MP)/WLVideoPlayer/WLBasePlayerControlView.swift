@@ -4,7 +4,9 @@
 //
 //  Created by wl on 16/2/25.
 //  Copyright © 2016年 wl. All rights reserved.
-//
+//  WLBasePlayerControlView设置这一父类是无赖之举，
+//  因为swift中暂时不支持(或者作者本人没找到)像oc中这样的写法:UIView<someProtocol> *obj
+//  也就是说不支持定义一个变量，让他是UIView的子类，并且这个View必须遵守某个协议
 
 import UIKit
 
@@ -45,6 +47,18 @@ class WLBasePlayerControlView: UIView {
         }else {
             self.setVirtualHidden(true)
         }
+    }
+    
+    
+    /**
+     自定义控制面板应该实现这个方法，
+     实现此方法，将会自动更新面板上显示内容:时间、进度条等
+     - parameter currentPlaybackTime: 当前时间
+     - parameter duration:            视频总时长
+     - parameter playableDuration:    已经缓冲的时长
+     */
+    func updateProgress(currentPlaybackTime: NSTimeInterval, duration: NSTimeInterval, playableDuration: NSTimeInterval) {
+        
     }
 }
 

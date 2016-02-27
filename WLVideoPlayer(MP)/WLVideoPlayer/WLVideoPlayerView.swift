@@ -27,12 +27,17 @@ class WLVideoPlayerView: UIView {
     }
     /// 视频等待的占位图片
     var placeholderView: UIView?
+    
+    // ps: 因为swift中暂时不支持(或者作者本人没找到)像oc中这样的写法:UIView<someProtocol> *obj
+    // 也就是说不支持定义一个变量，让他是UIView的子类，并且这个View必须遵守某个协议,妥协之下，便设置了一个类似于接口的一个父类
     /// 用户自定义控制界面
     var customControlView: WLBasePlayerControlView? {
         didSet {
             player.controlStyle = .None
         }
     }
+    
+    
     /// 自定义控制界面事件处理者
     lazy var playerControlHandler: WLPlayerHandler = WLPlayerHandler()
     
@@ -40,6 +45,7 @@ class WLVideoPlayerView: UIView {
     /// 让一个view变得透明但能够响应事件的透明度
     private let HiddenAlpha: CGFloat = 0.02
     
+    private var progressTimer: NSTimer?
     init(url : NSURL?) {
         contentURL = url
         player = MPMoviePlayerController(contentURL: contentURL)
@@ -61,6 +67,16 @@ class WLVideoPlayerView: UIView {
     
     deinit {
         print("WLVideoPlayerView===deinit")
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    /**
+     为了防止定制器造成循环引用
+     */
+    override func willMoveToSuperview(newSuperview: UIView?) {
+        super.willMoveToSuperview(newSuperview)
+        if newSuperview == nil {
+            removeProgressTimer()
+        }
     }
     
     func play() {
@@ -70,6 +86,7 @@ class WLVideoPlayerView: UIView {
             self.addSubview(placeholderView)
             self.bringSubviewToFront(placeholderView)
         }
+        setupCustomControlView()
     }
     
     func playInView(inView: UIView) {
@@ -89,22 +106,45 @@ class WLVideoPlayerView: UIView {
      添加视频通知事件
      */
     private func setupNotification() {
-        //播放的视频"可以播放"的时候调用
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playerReadyForDisplayDidChange"), name: MPMoviePlayerReadyForDisplayDidChangeNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playerWillEnterFullscreen"), name: MPMoviePlayerWillEnterFullscreenNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playerWillExitFullscreen"), name: MPMoviePlayerWillExitFullscreenNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("moviePlaybackStateDidChange"), name: MPMoviePlayerPlaybackStateDidChangeNotification, object: nil)
     }
-
-     // MARK: - 监听方法/回调方法
+    /**
+     当播放视频进入播放状态且用户自定义了视频控制面板的时候调动，
+     添加一个定时器，为了更新用户自定义视频控制面板
+     */
+    private func addProgressTimer() {
+        
+        guard let customControlView = self.customControlView else {
+            return
+        }
+        
+        removeProgressTimer()
+        let timer = NSTimer(timeInterval: 1.0, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
+        NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
+        self.progressTimer = timer
+        // 立即更新控制面板显示内容
+        playerControlHandler.updateProgress(customControlView)
+    }
+    /**
+     当任何事件导致视频进入停止、暂停状态的时候调用
+     移除更新自定义视频控制面板的那个定时器
+     */
+    private func removeProgressTimer() {
+        self.progressTimer?.invalidate()
+        self.progressTimer = nil
+    }
     
     /**
-    播放的视频"可以播放"的时候调用,设置播放的控制面板
-    */
-    func playerReadyForDisplayDidChange() {
-        
-        placeholderView?.removeFromSuperview()
+     在用户点击播放按钮后调用(第一次播放某视频，一个视频只会调用一次)
+     设置用户自定义视频控制器一些属性，
+     起初是隐藏的，当视频真正播放的时候才展示
+     */
+    func setupCustomControlView() {
         guard let customControlView = self.customControlView else {
             return
         }
@@ -113,15 +153,42 @@ class WLVideoPlayerView: UIView {
         customControlView.frame = self.bounds
         customControlView.setVirtualHidden(false)
         self.addSubview(customControlView)
+        customControlView.hidden = true
+        
         
         // 让playerControlHandler 处理视频控制事件
         customControlView.delegate = playerControlHandler
         playerControlHandler.player = player
         
+    }
+    /**
+     视频进入播放状态的时候进行调用(可能重复调用)
+     */
+    func readyToPlayer() {
+
+        placeholderView?.removeFromSuperview()
+        guard let customControlView = self.customControlView else {
+            return
+        }
+        // 只有用户使用了自定义视频控制面板才会运行到这,开启自动更新面板的定时器
+        addProgressTimer()
+        customControlView.hidden = false
+        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(3 * NSEC_PER_SEC)), dispatch_get_main_queue()) { () -> Void in
             customControlView.setVirtualHidden(true)
         }
     }
+
+     // MARK: - 监听方法/回调方法
+    
+    /**
+    定时器回调方法，在视频播放的时候，每一秒调用一次，
+    用来更新进度条以及播放的时间
+    */
+    func updateProgress() {
+        playerControlHandler.updateProgress(customControlView!)
+    }
+
     /**
      视频进入全屏模式的时候调用，
      目的是为了处理自定义视频控制器的显示问题
@@ -148,6 +215,29 @@ class WLVideoPlayerView: UIView {
         }
         customControlView.frame = self.bounds
         self.addSubview(customControlView)
+    }
+    
+    /**
+     当视频状态发生改变的时候调用
+     */
+    func moviePlaybackStateDidChange() {
+        switch player.playbackState {
+        case .Stopped:
+            removeProgressTimer()
+            break
+        case .Playing:
+            readyToPlayer()
+            break
+        case .Paused:
+            removeProgressTimer()
+            break
+        case .Interrupted:
+            print("Interrupted")
+            break
+        case .SeekingForward, .SeekingBackward:
+            removeProgressTimer()
+            break
+        }
     }
     
 }

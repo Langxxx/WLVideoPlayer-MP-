@@ -9,10 +9,19 @@
 import UIKit
 import MediaPlayer
 
-class WLPlayerHandler: NSObject, WLPlayerControlViewDelegate{
+class WLPlayerHandler: NSObject {
     
     weak var player: MPMoviePlayerController!
 
+    /**
+     更新自定义控制面板的进度条以及时间
+     */
+    func updateProgress(playerControlView: WLBasePlayerControlView) {
+        playerControlView.updateProgress(player.currentPlaybackTime, duration: player.duration, playableDuration: player.playableDuration)
+    }
+}
+
+extension WLPlayerHandler: WLPlayerControlViewDelegate {
     /**
      WLBasePlayerControlView的代理方法，
      当点击视频控制View的空白处调用
@@ -41,12 +50,12 @@ class WLPlayerHandler: NSObject, WLPlayerControlViewDelegate{
     
     // TODO: 这样全屏实现不太好，后期将会自定义全屏
     /**
-     WLBasePlayerControlView的代理方法，
-     当点击进入/退出全屏的时候调用
-     用来进入/退出全屏
-     - parameter playerControlView: 用户自定义的那个控制面板
-     - parameter pauseBtn:          全屏/退出全屏按钮
-     */
+    WLBasePlayerControlView的代理方法，
+    当点击进入/退出全屏的时候调用
+    用来进入/退出全屏
+    - parameter playerControlView: 用户自定义的那个控制面板
+    - parameter pauseBtn:          全屏/退出全屏按钮
+    */
     func playerControlView(playerControlView: WLBasePlayerControlView, enterFullScreenBtnDidClik enterFullScreenBtn: UIButton) {
         
         assert(player != nil, "player is nil")
@@ -61,5 +70,3 @@ class WLPlayerHandler: NSObject, WLPlayerControlViewDelegate{
         enterFullScreenBtn.selected = !enterFullScreenBtn.selected
     }
 }
-
-
