@@ -12,15 +12,64 @@ import MediaPlayer
 class WLPlayerHandler: NSObject {
     
     weak var player: MPMoviePlayerController!
-
+    weak var customControlView: WLBasePlayerControlView!
+    var customControlViewAutoHiddenInterval: NSTimeInterval = 3
+    
+    /// customControlViewAutoHiddenInterval秒调用一次，用来隐藏自定义控制面板
+    private var autoHiddenTimer: NSTimer?
+    
+    override init() {
+        super.init()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("customControlViewStateDidChange"), name: WLPlayerCustomControlViewStateDidChangeNotification, object: nil)
+    }
+    deinit {
+//        print("WLPlayerHandler===deinit")
+    }
+    
+    /**
+     自定义控制面板显示的时候变会调用,
+     用来添加一个定时器，为了在适合的时候隐藏控制面板
+     */
+    private func addAutoHiddenTimer() {
+        removeAutoHiddenTimer()
+        let timer = NSTimer(timeInterval: customControlViewAutoHiddenInterval, target: self, selector: Selector("hiddenCustomControlView"), userInfo: nil, repeats: false)
+        NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
+        autoHiddenTimer = timer
+    }
+    
+    private func removeAutoHiddenTimer() {
+        autoHiddenTimer?.invalidate()
+        autoHiddenTimer = nil
+    }
+    
     /**
      更新自定义控制面板的进度条以及时间
      */
     func updateProgress(playerControlView: WLBasePlayerControlView) {
         playerControlView.updateProgress(player.currentPlaybackTime, duration: player.duration, playableDuration: player.playableDuration)
     }
+    
+ // MARK: - 回调方法
+    
+    /**
+     定时器回调方法,自定义控制面板显示且customControlViewAutoHiddenInterval秒对其没有操作时候调用
+     用来隐藏自定义视频控制面板
+     */
+    func hiddenCustomControlView() {
+        customControlView.setVirtualHidden(true)
+        removeAutoHiddenTimer()
+    }
+    /**
+     当自定义控制面板上发生任何交互事件被调用，
+     重置自动隐藏面板的定时器
+     */
+    func customControlViewStateDidChange() {
+        removeAutoHiddenTimer()
+        addAutoHiddenTimer()
+    }
 }
 
+// MARK: - WLPlayerControlViewDelegate代理
 extension WLPlayerHandler: WLPlayerControlViewDelegate {
     /**
      WLBasePlayerControlView的代理方法，
@@ -29,6 +78,7 @@ extension WLPlayerHandler: WLPlayerControlViewDelegate {
      */
     func didClikOnPlayerControlView(playerControlView: WLBasePlayerControlView) {
         playerControlView.setVirtualHidden()
+        addAutoHiddenTimer()
     }
     /**
      WLBasePlayerControlView的代理方法，
@@ -44,8 +94,9 @@ extension WLPlayerHandler: WLPlayerControlViewDelegate {
         }else {
             player.pause()
         }
-        
         pauseBtn.selected = !pauseBtn.selected
+        
+        addAutoHiddenTimer()
     }
     
     // TODO: 这样全屏实现不太好，后期将会自定义全屏
@@ -68,5 +119,28 @@ extension WLPlayerHandler: WLPlayerControlViewDelegate {
         }
         
         enterFullScreenBtn.selected = !enterFullScreenBtn.selected
+        addAutoHiddenTimer()
+    }
+    /**
+     WLBasePlayerControlView的代理方法，
+     当playerControlView开始滑动的时候调用
+     */
+    func beganSlideOnPlayerControlView(playerControlView: WLBasePlayerControlView) {
+        assert(player != nil, "player is nil")
+        player.pause()
+        removeAutoHiddenTimer()
+    }
+    /**
+     WLBasePlayerControlView的代理方法，
+     当playerControlView滑动结束的时候调用
+     设置视频播放的时间
+     - parameter playerControlView: 视频新的播放时间
+     */
+    func playerControlView(playerControlView: WLBasePlayerControlView, endedSlide currentTime: NSTimeInterval) {
+        
+        assert(player != nil, "player is nil")
+        player.currentPlaybackTime = currentTime
+        player.play()
+        addAutoHiddenTimer()
     }
 }

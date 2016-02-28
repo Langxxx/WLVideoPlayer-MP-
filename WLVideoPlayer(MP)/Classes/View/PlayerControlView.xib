@@ -90,6 +90,7 @@
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <gestureRecognizers/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="gYv-dj-cde" secondAttribute="trailing" constant="5" id="Gzf-IO-MtS"/>
                                 <constraint firstItem="q3q-ha-ad1" firstAttribute="centerY" secondItem="mJB-bX-QoB" secondAttribute="centerY" id="IQh-44-kWO"/>
@@ -135,7 +136,7 @@
             <connections>
                 <outlet property="currentSliderConstraint" destination="Zxc-tp-4KM" id="Nu1-W6-b07"/>
                 <outlet property="playableSliderConstraint" destination="CBx-rN-AgY" id="U3V-lH-fRF"/>
-                <outlet property="sliderViewConstraint" destination="mJB-bX-QoB" id="4uh-X6-A4N"/>
+                <outlet property="sliderView" destination="mJB-bX-QoB" id="4uh-X6-A4N"/>
                 <outlet property="timeLabel" destination="lSq-NG-rgG" id="y3k-5N-eGy"/>
             </connections>
             <point key="canvasLocation" x="448" y="194.5"/>

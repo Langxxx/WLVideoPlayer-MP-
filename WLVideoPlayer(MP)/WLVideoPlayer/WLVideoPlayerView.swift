@@ -9,12 +9,7 @@
 import UIKit
 import MediaPlayer
 
-//protocol WLPlayerControlViewDelegate: class {
-//    func didClikOnPlayerControlView(playerControlView: PlayerControlView)
-//    func playerControlView(playerControlView: PlayerControlView, pauseBtnDidClik pauseBtn: UIButton)
-//    func playerControlView(playerControlView: PlayerControlView, enterFullScreenBtnDidClik enterFullScreenBtn: UIButton)
-//    
-//}
+let WLPlayerCustomControlViewStateDidChangeNotification = "WLPlayerCustomControlViewStateDidChangeNotiffication"
 
 class WLVideoPlayerView: UIView {
     
@@ -36,16 +31,19 @@ class WLVideoPlayerView: UIView {
             player.controlStyle = .None
         }
     }
-    
-    
+    /// 用户自定义视频控制面板自动隐藏的时间
+    var customControlViewAutoHiddenInterval: NSTimeInterval = 3 {
+        didSet {
+            playerControlHandler.customControlViewAutoHiddenInterval = customControlViewAutoHiddenInterval
+        }
+    }
     /// 自定义控制界面事件处理者
     lazy var playerControlHandler: WLPlayerHandler = WLPlayerHandler()
     
     private let defaultFrame = CGRectMake(0,0,0,0)
-    /// 让一个view变得透明但能够响应事件的透明度
-    private let HiddenAlpha: CGFloat = 0.02
-    
+    /// 1秒调用一次，用来更新用户自定义视频控制面板上进度条以及时间的显示
     private var progressTimer: NSTimer?
+    
     init(url : NSURL?) {
         contentURL = url
         player = MPMoviePlayerController(contentURL: contentURL)
@@ -138,27 +136,26 @@ class WLVideoPlayerView: UIView {
         self.progressTimer?.invalidate()
         self.progressTimer = nil
     }
-    
+
     /**
      在用户点击播放按钮后调用(第一次播放某视频，一个视频只会调用一次)
      设置用户自定义视频控制器一些属性，
      起初是隐藏的，当视频真正播放的时候才展示
      */
-    func setupCustomControlView() {
+    private func setupCustomControlView() {
         guard let customControlView = self.customControlView else {
             return
         }
         // 只有用户使用了自定义视频控制面板才会运行到这
         player.controlStyle = .None
         customControlView.frame = self.bounds
-        customControlView.setVirtualHidden(false)
         self.addSubview(customControlView)
         customControlView.hidden = true
-        
         
         // 让playerControlHandler 处理视频控制事件
         customControlView.delegate = playerControlHandler
         playerControlHandler.player = player
+        playerControlHandler.customControlView = customControlView
         
     }
     /**
@@ -171,12 +168,11 @@ class WLVideoPlayerView: UIView {
             return
         }
         // 只有用户使用了自定义视频控制面板才会运行到这,开启自动更新面板的定时器
-        addProgressTimer()
         customControlView.hidden = false
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(3 * NSEC_PER_SEC)), dispatch_get_main_queue()) { () -> Void in
-            customControlView.setVirtualHidden(true)
-        }
+        customControlView.setVirtualHidden(false)
+        addProgressTimer()
+
+        NSNotificationCenter.defaultCenter().postNotificationName(WLPlayerCustomControlViewStateDidChangeNotification, object: nil)
     }
 
      // MARK: - 监听方法/回调方法

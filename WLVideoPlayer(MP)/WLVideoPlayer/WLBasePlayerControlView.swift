@@ -15,6 +15,9 @@ import UIKit
     optional func didClikOnPlayerControlView(playerControlView: WLBasePlayerControlView)
     optional func playerControlView(playerControlView: WLBasePlayerControlView, pauseBtnDidClik pauseBtn: UIButton)
     optional func playerControlView(playerControlView: WLBasePlayerControlView, enterFullScreenBtnDidClik enterFullScreenBtn: UIButton)
+    
+    optional func beganSlideOnPlayerControlView(playerControlView: WLBasePlayerControlView)
+    optional func playerControlView(playerControlView: WLBasePlayerControlView, endedSlide currentTime: NSTimeInterval)
 }
 
 class WLBasePlayerControlView: UIView {
@@ -23,6 +26,10 @@ class WLBasePlayerControlView: UIView {
     
     /// 让这个view变得透明但能够响应事件的透明度
     let HiddenAlpha: CGFloat = 0.02
+    /// 视频总长度
+    var totalDuration: NSTimeInterval = 0
+    // 视频当前时间
+    var currentTime: NSTimeInterval = 0
     
     /**
      让这个view变得透明并且能够响应点击事件
