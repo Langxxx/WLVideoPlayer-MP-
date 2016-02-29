@@ -23,7 +23,7 @@ class WLPlayerHandler: NSObject {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("customControlViewStateDidChange"), name: WLPlayerCustomControlViewStateDidChangeNotification, object: nil)
     }
     deinit {
-//        print("WLPlayerHandler===deinit")
+        //        print("WLPlayerHandler===deinit")
     }
     
     /**
@@ -49,12 +49,12 @@ class WLPlayerHandler: NSObject {
         playerControlView.updateProgress(player.currentPlaybackTime, duration: player.duration, playableDuration: player.playableDuration)
     }
     
- // MARK: - 回调方法
+    // MARK: - 回调方法
     
     /**
-     定时器回调方法,自定义控制面板显示且customControlViewAutoHiddenInterval秒对其没有操作时候调用
-     用来隐藏自定义视频控制面板
-     */
+    定时器回调方法,自定义控制面板显示且customControlViewAutoHiddenInterval秒对其没有操作时候调用
+    用来隐藏自定义视频控制面板
+    */
     func hiddenCustomControlView() {
         customControlView.setVirtualHidden(true)
         removeAutoHiddenTimer()
@@ -111,11 +111,10 @@ extension WLPlayerHandler: WLPlayerControlViewDelegate {
         
         assert(player != nil, "player is nil")
         
-        playerControlView.removeFromSuperview()
         if enterFullScreenBtn.selected { //全屏==>退出全屏
-            player.setFullscreen(false, animated: true)
+            NSNotificationCenter.defaultCenter().postNotificationName(WLPlayerWillExitFullscreenNotification, object: nil)
         }else {
-            player.setFullscreen(true, animated: true)
+            NSNotificationCenter.defaultCenter().postNotificationName(WLPlayerWillEnterFullscreenNotification, object: nil)
         }
         
         enterFullScreenBtn.selected = !enterFullScreenBtn.selected

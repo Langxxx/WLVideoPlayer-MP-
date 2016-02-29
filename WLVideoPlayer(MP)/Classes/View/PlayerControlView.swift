@@ -12,33 +12,44 @@ import UIKit
 //    func didClikOnPlayerControlView(playerControlView: PlayerControlView)
 //    func playerControlView(playerControlView: PlayerControlView, pauseBtnDidClik pauseBtn: UIButton)
 //    func playerControlView(playerControlView: PlayerControlView, enterFullScreenBtnDidClik enterFullScreenBtn: UIButton)
-//    
+//
 //}
 
 class PlayerControlView: WLBasePlayerControlView {
-
+    
+    @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var topView: UIImageView!
     @IBOutlet weak var sliderView: UIView!
     @IBOutlet weak var currentSliderConstraint: NSLayoutConstraint!
     @IBOutlet weak var playableSliderConstraint: NSLayoutConstraint!
     
+    /// 顶部视图与父视图的宽度约束，默认是等于父视图
+    @IBOutlet weak var topViewWidthConstraint: NSLayoutConstraint!
+    /// 底部视图与父视图的宽度约束，默认是等于父视图
+    @IBOutlet weak var bottomViewWidthConstraint: NSLayoutConstraint!
+    /// 底部视图的底部与父视图底部的距离约束，默认是等于0，即紧靠父视图
+    @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
+    
+    
+    
     override func awakeFromNib() {
         let pan = UIPanGestureRecognizer(target: self, action: Selector("onSliderPan:"))
         sliderView.addGestureRecognizer(pan)
-
+        
         let tap = UITapGestureRecognizer(target: self, action: Selector("tap"))
         self.addGestureRecognizer(tap)
     }
-
-     // MARK: - 监听方法
+    
+    // MARK: - 监听方法
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     }
-
+    
     func tap() {
         self.delegate?.didClikOnPlayerControlView?(self)
     }
-
+    
     /**
      当暂停/播放按钮被点击的时候调用
      通知代理处理相关事件
@@ -98,5 +109,23 @@ class PlayerControlView: WLBasePlayerControlView {
         
         
     }
-    
+    /**
+     每次发生旋转都会被调用
+     用来更新视图上的约束
+     */
+    override func relayoutSubView() {
+        var temp:CGFloat = 0
+        
+        let orientation = UIDevice.currentDevice().orientation
+        
+        if orientation == .LandscapeLeft || orientation == .LandscapeRight {
+            temp = self.frame.width - self.frame.height
+        }
+        
+        topViewWidthConstraint.constant = temp
+        bottomViewWidthConstraint.constant = temp
+        bottomViewBottomConstraint.constant = -temp
+        self.layoutSubviews()
+        
+    }
 }

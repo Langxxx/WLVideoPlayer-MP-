@@ -11,12 +11,6 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="233"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_topshadow" translatesAutoresizingMaskIntoConstraints="NO" id="Lad-rG-Z4V">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="wLZ-AO-1Jm"/>
-                    </constraints>
-                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6FK-pp-MXW">
                     <rect key="frame" x="0.0" y="193" width="600" height="40"/>
                     <subviews>
@@ -121,25 +115,36 @@
                         <constraint firstItem="8Oj-aI-INx" firstAttribute="top" secondItem="6FK-pp-MXW" secondAttribute="top" id="sxK-z2-tPb"/>
                     </constraints>
                 </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_topshadow" translatesAutoresizingMaskIntoConstraints="NO" id="Lad-rG-Z4V">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="wLZ-AO-1Jm"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="6FK-pp-MXW" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="IOa-qD-xmm"/>
                 <constraint firstItem="Lad-rG-Z4V" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="KfI-6G-hyf"/>
+                <constraint firstItem="Lad-rG-Z4V" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="Sqj-bA-2c5"/>
                 <constraint firstItem="6FK-pp-MXW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ZUu-oB-oF8"/>
-                <constraint firstAttribute="trailing" secondItem="Lad-rG-Z4V" secondAttribute="trailing" id="ge4-OS-kBa"/>
-                <constraint firstItem="Lad-rG-Z4V" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="hZT-7e-ahy"/>
-                <constraint firstAttribute="bottom" secondItem="6FK-pp-MXW" secondAttribute="bottom" id="n4x-7F-Zdj"/>
-                <constraint firstAttribute="trailing" secondItem="6FK-pp-MXW" secondAttribute="trailing" id="olf-90-4hc"/>
+                <constraint firstItem="6FK-pp-MXW" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="eOm-G8-3CR"/>
+                <constraint firstItem="Lad-rG-Z4V" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="r0u-wj-IdX"/>
                 <constraint firstItem="6FK-pp-MXW" firstAttribute="height" secondItem="Lad-rG-Z4V" secondAttribute="height" id="w9h-9D-kyt"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="bottomView" destination="6FK-pp-MXW" id="456-nG-sJy"/>
+                <outlet property="bottomViewBottomConstraint" destination="IOa-qD-xmm" id="sat-m4-qog"/>
+                <outlet property="bottomViewWidthConstraint" destination="eOm-G8-3CR" id="Dkb-Us-J1d"/>
                 <outlet property="currentSliderConstraint" destination="Zxc-tp-4KM" id="Nu1-W6-b07"/>
                 <outlet property="playableSliderConstraint" destination="CBx-rN-AgY" id="U3V-lH-fRF"/>
                 <outlet property="sliderView" destination="mJB-bX-QoB" id="4uh-X6-A4N"/>
                 <outlet property="timeLabel" destination="lSq-NG-rgG" id="y3k-5N-eGy"/>
+                <outlet property="topView" destination="Lad-rG-Z4V" id="Enj-pc-3bl"/>
+                <outlet property="topViewWidthConstraint" destination="Sqj-bA-2c5" id="iiI-l1-zHX"/>
             </connections>
-            <point key="canvasLocation" x="448" y="194.5"/>
+            <point key="canvasLocation" x="412" y="194.5"/>
         </view>
     </objects>
     <resources>

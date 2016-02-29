@@ -21,7 +21,7 @@ import UIKit
 }
 
 class WLBasePlayerControlView: UIView {
-
+    
     weak var delegate: WLPlayerControlViewDelegate?
     
     /// 让这个view变得透明但能够响应事件的透明度
@@ -67,5 +67,6 @@ class WLBasePlayerControlView: UIView {
     func updateProgress(currentPlaybackTime: NSTimeInterval, duration: NSTimeInterval, playableDuration: NSTimeInterval) {
         
     }
+    func relayoutSubView() {}
 }
 
