@@ -47,7 +47,7 @@ class WLVideoPlayerView: UIView {
         }
     }
     /// 进入全屏的模式
-    var fullscreenModel: WLVideoPlayerViewFullscreenModel = .LandscapeWhenInFullscreen
+    var fullscreenModel: WLVideoPlayerViewFullscreenModel = .AwaysLandscape
     
     /// 自定义控制界面事件处理者
     lazy var playerControlHandler: WLPlayerHandler = WLPlayerHandler()
@@ -56,7 +56,12 @@ class WLVideoPlayerView: UIView {
     /// 1秒调用一次，用来更新用户自定义视频控制面板上进度条以及时间的显示
     private var progressTimer: NSTimer?
     
-    private var isFullscreen: Bool = false
+    private var isFullscreen: Bool = false {
+        didSet {
+            // 为了隐藏状态栏必须在info.plist中View controller-based status bar appearance 设置为NO
+            UIApplication.sharedApplication().setStatusBarHidden(isFullscreen, withAnimation: .Fade)
+        }
+    }
     
     /// WLVideoPlayerView这个对象的父视图
     private weak var inView: UIView!
@@ -187,36 +192,17 @@ class WLVideoPlayerView: UIView {
         
         NSNotificationCenter.defaultCenter().postNotificationName(WLPlayerCustomControlViewStateDidChangeNotification, object: nil)
     }
-    // TODO: 代码需要重构
+
     /**
     每当设备横屏的时候调用
     让视频播放器进入横屏的全屏播放状态
     - parameter angle: 旋转的角度
     */
     func toLandscape(angle: CGFloat) {
-        guard let customControlView = self.customControlView else {
-            return
-        }
-        
         if fullscreenModel == .LandscapeWhenInFullscreen && !isFullscreen {
             return
         }else {
-            let app = UIApplication.sharedApplication()
-            let window = app.keyWindow!
-            // 为了隐藏状态栏必须在info.plist中View controller-based status bar appearance 设置为NO
-            app.setStatusBarHidden(true, withAnimation: .None)
-            window.addSubview(self)
-            
-            UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.transform = CGAffineTransformIdentity
-                self.transform = CGAffineTransformMakeRotation(angle)
-                self.frame = window.bounds
-                self.player.view.frame = self.bounds
-                customControlView.relayoutSubView()
-                }, completion: { (finish) -> Void in
-                    self.isFullscreen = true
-                    print(self.frame)
-            })
+            enterFullscreen(angle);
         }
     }
     /**
@@ -224,73 +210,47 @@ class WLVideoPlayerView: UIView {
      退出全屏播放状态
      */
     func toPortrait() {
-        guard let customControlView = self.customControlView else {
-            return
-        }
-        
+
         if fullscreenModel == .LandscapeWhenInFullscreen && isFullscreen  {
-            let window = UIApplication.sharedApplication().keyWindow!
-            // 为了隐藏状态栏必须在info.plist中View controller-based status bar appearance 设置为NO
-            window.addSubview(self)
             
-            UIView.animateWithDuration(0.5) { () -> Void in
-                self.transform = CGAffineTransformIdentity
-                self.frame = window.bounds
-                self.player.view.frame = self.bounds
-                customControlView.relayoutSubView()
-                
-            }
-        }else if fullscreenModel == .LandscapeWhenInFullscreen && !isFullscreen {
+            changePlayerScreenState(UIApplication.sharedApplication().keyWindow!, needRotation: nil, isfullscrenn: true)
             
         }else if fullscreenModel == .AwaysLandscape {
-            UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: .None)
-            
-            UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.transform = CGAffineTransformIdentity
-                self.frame = self.inView.bounds
-                self.player.view.frame = self.bounds
-                self.inView.addSubview(self)
-                customControlView.relayoutSubView()
-                }, completion: { (finish) -> Void in
-                    self.isFullscreen = false
-            })
+            exitFullscreen()
         }
     }
     
-    func enterFullscreen() {
-        guard let customControlView = self.customControlView else {
-            return
-        }
-        let app = UIApplication.sharedApplication()
-        let window = app.keyWindow!
-        // 为了隐藏状态栏必须在info.plist中View controller-based status bar appearance 设置为NO
-        app.setStatusBarHidden(true, withAnimation: .None)
-        window.addSubview(self)
+    
+    
+    func enterFullscreen(angle: CGFloat?) {
         
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
-            self.frame = window.bounds
-            self.player.view.frame = self.bounds
-            
-            customControlView.relayoutSubView()
-            }) { (finish) -> Void in
-                self.isFullscreen = true
-        }
+        changePlayerScreenState(UIApplication.sharedApplication().keyWindow!, needRotation: angle, isfullscrenn: true)
     }
     
     func exitFullscreen() {
+        changePlayerScreenState(self.inView, needRotation: nil, isfullscrenn: false)
+    }
+    
+    func changePlayerScreenState(inView: UIView, needRotation angle: CGFloat?, isfullscrenn: Bool) {
+        
         guard let customControlView = self.customControlView else {
             return
         }
-        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: .None)
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
-            self.frame = self.inView.bounds
-            self.player.view.frame = self.bounds
-            self.inView.addSubview(self)
-            customControlView.relayoutSubView()
-            }) { (finish) -> Void in
-                self.isFullscreen = false
-        }
         
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            
+            inView.addSubview(self)
+            
+            self.transform = CGAffineTransformIdentity
+            self.transform = CGAffineTransformMakeRotation(angle ?? 0)
+            
+            self.frame = inView.bounds
+            self.player.view.frame = self.bounds
+            customControlView.relayoutSubView()
+            
+            }) { (finish) -> Void in
+                self.isFullscreen = isfullscrenn
+        }
     }
     // MARK: - 监听方法/回调方法
     
@@ -350,7 +310,7 @@ class WLVideoPlayerView: UIView {
             UIDevice.currentDevice().setValue(NSNumber(integer: UIDeviceOrientation.LandscapeLeft.rawValue), forKey: "orientation")
             break
         case .LandscapeWhenInFullscreen:
-            enterFullscreen()
+            enterFullscreen(nil)
             break
         }
     }
