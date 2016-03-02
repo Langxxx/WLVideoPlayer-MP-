@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SnapKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SwiftyJSON.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,7 +32,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>13DBD1F654D339AA442A613429A11054</key>
+		<key>23BC7424321DCC1723939AEA48534F28</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3768182B9ABE3FC59F432A346796E5EF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -37,12 +47,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>73BCB5C73A6C1FCA1226E9159390EBC3</key>
+		<key>79DED3EECAA81B5AD8F32D5DD8B74C03</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9FECC461D8378F3AB9ADC100DE00508D</key>
+		<key>AB5967B9D91989973EEAD33980ED4BC9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
