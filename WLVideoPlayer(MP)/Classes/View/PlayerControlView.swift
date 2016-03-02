@@ -21,6 +21,10 @@ class PlayerControlView: WLBasePlayerControlView {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var topView: UIImageView!
     @IBOutlet weak var sliderView: UIView!
+    @IBOutlet weak var enterFullBtn: UIButton!
+    @IBOutlet weak var pauseBtn: UIButton!
+    
+    
     @IBOutlet weak var currentSliderConstraint: NSLayoutConstraint!
     @IBOutlet weak var playableSliderConstraint: NSLayoutConstraint!
     
@@ -110,7 +114,7 @@ class PlayerControlView: WLBasePlayerControlView {
         
     }
     /**
-     每次发生旋转都会被调用
+     每次播放器的播放模式发生变化的生活调用(进入\退出全屏\旋转等)
      用来更新视图上的约束
      */
     override func relayoutSubView() {
@@ -127,5 +131,9 @@ class PlayerControlView: WLBasePlayerControlView {
         bottomViewBottomConstraint.constant = -temp
         self.layoutSubviews()
         
+    }
+    
+    override func getEnterFullscreenBtn() -> UIButton? {
+        return enterFullBtn
     }
 }

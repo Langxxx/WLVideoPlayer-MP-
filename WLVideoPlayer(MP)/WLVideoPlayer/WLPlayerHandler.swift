@@ -21,6 +21,8 @@ class WLPlayerHandler: NSObject {
     override init() {
         super.init()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("customControlViewStateDidChange"), name: WLPlayerCustomControlViewStateDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playerDidExitFullscreen"), name: WLPlayerDidExitFullscreenNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playerDidEnterFullscreen"), name: WLPlayerDidEnterFullscreenNotification, object: nil)
     }
     deinit {
         //        print("WLPlayerHandler===deinit")
@@ -67,6 +69,17 @@ class WLPlayerHandler: NSObject {
         removeAutoHiddenTimer()
         addAutoHiddenTimer()
     }
+    
+    
+    func playerDidExitFullscreen() {
+        customControlView.getEnterFullscreenBtn()?.selected = false
+        addAutoHiddenTimer()
+    }
+    
+    func playerDidEnterFullscreen() {
+        customControlView.getEnterFullscreenBtn()?.selected = true
+        addAutoHiddenTimer()
+    }
 }
 
 // MARK: - WLPlayerControlViewDelegate代理
@@ -94,12 +107,10 @@ extension WLPlayerHandler: WLPlayerControlViewDelegate {
         }else {
             player.pause()
         }
-        pauseBtn.selected = !pauseBtn.selected
-        
         addAutoHiddenTimer()
     }
     
-    // TODO: 这样全屏实现不太好，后期将会自定义全屏
+
     /**
     WLBasePlayerControlView的代理方法，
     当点击进入/退出全屏的时候调用

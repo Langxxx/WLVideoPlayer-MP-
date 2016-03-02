@@ -65,8 +65,19 @@ class WLBasePlayerControlView: UIView {
      - parameter playableDuration:    已经缓冲的时长
      */
     func updateProgress(currentPlaybackTime: NSTimeInterval, duration: NSTimeInterval, playableDuration: NSTimeInterval) {
-        
+        fatalError("请子类实现相关方法")
     }
-    func relayoutSubView() {}
+    /**
+     每次播放器的播放模式发生变化的生活调用(进入\退出全屏\旋转等)
+     发生旋转有可能对控制面板版原先的约束产生影响，在这里更新适合的约束
+     */
+    func relayoutSubView() {
+        fatalError("请子类实现相关方法")
+    }
+
+    func getEnterFullscreenBtn() -> UIButton? {
+        fatalError("请子类实现相关方法")
+    }
+
 }
 

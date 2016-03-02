@@ -12,6 +12,8 @@ import MediaPlayer
 let WLPlayerCustomControlViewStateDidChangeNotification = "WLPlayerCustomControlViewStateDidChangeNotiffication"
 let WLPlayerWillEnterFullscreenNotification = "WLPlayerWillEnterFullscreenNotification"
 let WLPlayerWillExitFullscreenNotification = "WLPlayerWillExitFullscreenNotification"
+let WLPlayerDidEnterFullscreenNotification = "WLPlayerDidEnterFullscreenNotification"
+let WLPlayerDidExitFullscreenNotification = "WLPlayerDidExitFullscreenNotification"
 
 enum WLVideoPlayerViewFullscreenModel {
     /// 当设备旋转、全屏按钮点击就进入全屏且横屏的状态
@@ -59,7 +61,7 @@ class WLVideoPlayerView: UIView {
     private var isFullscreen: Bool = false {
         didSet {
             // 为了隐藏状态栏必须在info.plist中View controller-based status bar appearance 设置为NO
-            UIApplication.sharedApplication().setStatusBarHidden(isFullscreen, withAnimation: .Fade)
+            UIApplication.sharedApplication().setStatusBarHidden(isFullscreen, withAnimation: .Slide)
         }
     }
     
@@ -177,6 +179,27 @@ class WLVideoPlayerView: UIView {
         
     }
     /**
+     判断当前view是否显示在屏幕上
+     */
+    func isDisplayedInScreen() -> Bool {
+        
+        if self.hidden {
+            return false
+        }
+        
+        // self对应window的坐标
+        let rect = self.convertRect(self.frame, toView: nil)
+        let screenRect = UIScreen.mainScreen().bounds
+        
+        let intersectionRect = CGRectIntersection(rect, screenRect)
+        if CGRectIsEmpty(intersectionRect) || CGRectIsNull(intersectionRect) {
+            return false;
+        }
+        
+        return true
+    }
+    
+    /**
      视频进入播放状态的时候进行调用(可能重复调用)
      */
     func readyToPlayer() {
@@ -213,25 +236,28 @@ class WLVideoPlayerView: UIView {
 
         if fullscreenModel == .LandscapeWhenInFullscreen && isFullscreen  {
             
-            changePlayerScreenState(UIApplication.sharedApplication().keyWindow!, needRotation: nil, isfullscrenn: true)
+            changePlayerScreenState(UIApplication.sharedApplication().keyWindow!, needRotation: nil, isfullscreen: nil)
             
         }else if fullscreenModel == .AwaysLandscape {
             exitFullscreen()
         }
     }
     
-    
-    
     func enterFullscreen(angle: CGFloat?) {
-        
-        changePlayerScreenState(UIApplication.sharedApplication().keyWindow!, needRotation: angle, isfullscrenn: true)
+        changePlayerScreenState(UIApplication.sharedApplication().keyWindow!, needRotation: angle, isfullscreen: true)
     }
     
     func exitFullscreen() {
-        changePlayerScreenState(self.inView, needRotation: nil, isfullscrenn: false)
+        changePlayerScreenState(self.inView, needRotation: nil, isfullscreen: false)
     }
-    
-    func changePlayerScreenState(inView: UIView, needRotation angle: CGFloat?, isfullscrenn: Bool) {
+    /**
+     用来改变播放器的显示状态(是否全屏、是否竖屏等)
+     
+     - parameter inView:       播放器处于的父视图
+     - parameter angle:        是否需要旋转，nil代表不需要
+     - parameter isfullscreen: 是否将要全屏显示，nil代表保存原状
+     */
+    func changePlayerScreenState(inView: UIView, needRotation angle: CGFloat?, isfullscreen: Bool?) {
         
         guard let customControlView = self.customControlView else {
             return
@@ -249,8 +275,12 @@ class WLVideoPlayerView: UIView {
             customControlView.relayoutSubView()
             
             }) { (finish) -> Void in
-                self.isFullscreen = isfullscrenn
-        }
+                if isfullscreen != nil {
+                    self.isFullscreen = isfullscreen!
+                    NSNotificationCenter.defaultCenter().postNotificationName(
+                        isfullscreen! ? WLPlayerDidEnterFullscreenNotification : WLPlayerDidExitFullscreenNotification, object: nil)
+                }
+            }
     }
     // MARK: - 监听方法/回调方法
     
@@ -288,6 +318,9 @@ class WLVideoPlayerView: UIView {
      当设备发生旋转的时候调用
      */
     func deviceOrientationDidChange() {
+        guard isDisplayedInScreen() else {
+            return
+        }
         let orientation = UIDevice.currentDevice().orientation
         switch orientation {
         case .LandscapeLeft:
@@ -304,6 +337,9 @@ class WLVideoPlayerView: UIView {
         }
     }
     
+    /**
+     即将进入全屏模式的时候调用
+     */
     func playerWillEnterFullscreen() {
         switch fullscreenModel {
         case .AwaysLandscape:
@@ -314,12 +350,16 @@ class WLVideoPlayerView: UIView {
             break
         }
     }
-    
+    /**
+     即将退出全屏模式的时候调用
+     */
     func playerWillExitFullscreen() {
         switch fullscreenModel {
         case .AwaysLandscape:
+            UIDevice.currentDevice().setValue(NSNumber(integer: UIDeviceOrientation.Portrait.rawValue), forKey: "orientation")
             break
         case .LandscapeWhenInFullscreen:
+            UIDevice.currentDevice().setValue(NSNumber(integer: UIDeviceOrientation.Portrait.rawValue), forKey: "orientation")
             exitFullscreen()
             break
         }

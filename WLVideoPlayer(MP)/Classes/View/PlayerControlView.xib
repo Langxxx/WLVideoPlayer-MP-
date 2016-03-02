@@ -138,6 +138,8 @@
                 <outlet property="bottomViewBottomConstraint" destination="IOa-qD-xmm" id="sat-m4-qog"/>
                 <outlet property="bottomViewWidthConstraint" destination="eOm-G8-3CR" id="Dkb-Us-J1d"/>
                 <outlet property="currentSliderConstraint" destination="Zxc-tp-4KM" id="Nu1-W6-b07"/>
+                <outlet property="enterFullBtn" destination="0jo-mo-ng6" id="cjM-oU-DtH"/>
+                <outlet property="pauseBtn" destination="8Oj-aI-INx" id="Ase-mc-L9E"/>
                 <outlet property="playableSliderConstraint" destination="CBx-rN-AgY" id="U3V-lH-fRF"/>
                 <outlet property="sliderView" destination="mJB-bX-QoB" id="4uh-X6-A4N"/>
                 <outlet property="timeLabel" destination="lSq-NG-rgG" id="y3k-5N-eGy"/>
