@@ -5,15 +5,11 @@
 //  Created by wl on 16/2/23.
 //  Copyright © 2016年 wl. All rights reserved.
 //
-
+/***************************************************
+*  如果您发现任何BUG,或者有更好的建议或者意见，欢迎您的指出。
+*邮箱:wxl19950606@163.com.感谢您的支持
+***************************************************/
 import UIKit
-
-//protocol WLPlayerControlViewDelegate: class {
-//    func didClikOnPlayerControlView(playerControlView: PlayerControlView)
-//    func playerControlView(playerControlView: PlayerControlView, pauseBtnDidClik pauseBtn: UIButton)
-//    func playerControlView(playerControlView: PlayerControlView, enterFullScreenBtnDidClik enterFullScreenBtn: UIButton)
-//
-//}
 
 class PlayerControlView: WLBasePlayerControlView {
     
@@ -23,6 +19,7 @@ class PlayerControlView: WLBasePlayerControlView {
     @IBOutlet weak var sliderView: UIView!
     @IBOutlet weak var enterFullBtn: UIButton!
     @IBOutlet weak var pauseBtn: UIButton!
+    @IBOutlet weak var thumbImageView: UIImageView!
     
     
     @IBOutlet weak var currentSliderConstraint: NSLayoutConstraint!
@@ -35,7 +32,9 @@ class PlayerControlView: WLBasePlayerControlView {
     /// 底部视图的底部与父视图底部的距离约束，默认是等于0，即紧靠父视图
     @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
     
-    
+    var totalSliderWidth: CGFloat {
+        return self.sliderView.bounds.size.width - self.thumbImageView.bounds.width
+    }
     
     override func awakeFromNib() {
         let pan = UIPanGestureRecognizer(target: self, action: Selector("onSliderPan:"))
@@ -76,11 +75,10 @@ class PlayerControlView: WLBasePlayerControlView {
      - parameter playableDuration:    已经缓冲的时长
      */
     override func updateProgress(currentPlaybackTime: NSTimeInterval, duration: NSTimeInterval, playableDuration: NSTimeInterval) {
-        
         updateSliderViewWhenPlaying(currentPlaybackTime, duration: duration, playableDuration: playableDuration) { (finishPercent, playablePercent) -> Void in
             
-            self.currentSliderConstraint.constant = finishPercent * self.sliderView.bounds.size.width
-            self.playableSliderConstraint.constant = playablePercent * self.sliderView.bounds.size.width
+            self.currentSliderConstraint.constant = finishPercent * self.totalSliderWidth
+            self.playableSliderConstraint.constant = playablePercent * self.totalSliderWidth
             
         }
         timeLabel.text = timeText
@@ -91,16 +89,20 @@ class PlayerControlView: WLBasePlayerControlView {
      用来设置新的播放进度(时间)
      */
     func onSliderPan(sender: UIPanGestureRecognizer) {
-        
         updateSliderViewWhenSlide(sliderView, sender: sender) { (point) -> Void in
-            self.currentSliderConstraint.constant += point.x
-            if self.currentSliderConstraint.constant < 0 {
-                self.currentSliderConstraint.constant = 0
-            }else if self.currentSliderConstraint.constant > self.sliderView.bounds.width {
-                self.currentSliderConstraint.constant = self.sliderView.bounds.width
+            
+            var constant = self.currentSliderConstraint.constant + point.x
+            
+            if constant < 0 {
+                constant = 0
+            }else if constant > self.totalSliderWidth {
+                constant = self.totalSliderWidth
             }
+            
+            self.currentSliderConstraint.constant = constant
         }
-        let finishPercent = NSTimeInterval(currentSliderConstraint.constant / sliderView.bounds.width)
+        
+        let finishPercent = NSTimeInterval(self.currentSliderConstraint.constant / totalSliderWidth)
         currentTime = finishPercent * totalDuration
         timeLabel.text = timeText
     }

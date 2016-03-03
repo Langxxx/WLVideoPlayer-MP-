@@ -84,7 +84,7 @@ class MediaController: UIViewController {
         playingCellIndexPath = tableView.indexPathForCell(playingCell)
         
         playingPlayerView = WLVideoPlayerView(url: NSURL(string: urlStr)!)
-        playingPlayerView?.customControlView = controlDemoView
+        playingPlayerView?.customControlView = controlView
         playingPlayerView?.placeholderView = UIImageView(image: UIImage(named: "placeholder"))
         playingPlayerView?.playInView(inView)
     }

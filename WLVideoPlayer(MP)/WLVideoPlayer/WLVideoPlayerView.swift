@@ -6,6 +6,10 @@
 //  Copyright © 2016年 wl. All rights reserved.
 //
 
+/***************************************************
+*  如果您发现任何BUG,或者有更好的建议或者意见，欢迎您的指出。
+*邮箱:wxl19950606@163.com.感谢您的支持
+***************************************************/
 import UIKit
 import MediaPlayer
 
@@ -14,6 +18,7 @@ let WLPlayerWillEnterFullscreenNotification = "WLPlayerWillEnterFullscreenNotifi
 let WLPlayerWillExitFullscreenNotification = "WLPlayerWillExitFullscreenNotification"
 let WLPlayerDidEnterFullscreenNotification = "WLPlayerDidEnterFullscreenNotification"
 let WLPlayerDidExitFullscreenNotification = "WLPlayerDidExitFullscreenNotification"
+let WLPlayerDidPlayToEndTimeNotification = "WLPlayerDidPlayToEndTimeNotification"
 
 enum WLVideoPlayerViewFullscreenModel {
     /// 当设备旋转、全屏按钮点击就进入全屏且横屏的状态
@@ -23,6 +28,12 @@ enum WLVideoPlayerViewFullscreenModel {
 }
 
 class WLVideoPlayerView: UIView {
+    
+    // MARK: - 属性
+
+    //========================================================
+    // MARK: 接口属性
+    //========================================================
     
     var player: MPMoviePlayerController
     /// 播放地址
@@ -51,6 +62,10 @@ class WLVideoPlayerView: UIView {
     /// 进入全屏的模式
     var fullscreenModel: WLVideoPlayerViewFullscreenModel = .AwaysLandscape
     
+    //========================================================
+    // MARK: 私有属性
+    //========================================================
+    
     /// 自定义控制界面事件处理者
     lazy var playerControlHandler: WLPlayerHandler = WLPlayerHandler()
     
@@ -67,7 +82,13 @@ class WLVideoPlayerView: UIView {
     
     /// WLVideoPlayerView这个对象的父视图
     private weak var inView: UIView!
+  
+
+    // MARK: - 方法
     
+    //========================================================
+    // MARK: 初始化方法
+    //========================================================
     init(url : NSURL?) {
         contentURL = url
         player = MPMoviePlayerController(contentURL: contentURL)
@@ -95,30 +116,6 @@ class WLVideoPlayerView: UIView {
         }
     }
     
-    func play() {
-        player.play()
-        if let placeholderView = self.placeholderView {
-            placeholderView.frame = self.bounds
-            self.addSubview(placeholderView)
-            self.bringSubviewToFront(placeholderView)
-        }
-        setupCustomControlView()
-        player.view.frame = self.bounds
-    }
-    
-    func playInView(inView: UIView) {
-        self.inView = inView
-        self.removeFromSuperview()
-        self.frame = inView.bounds
-        inView.addSubview(self)
-        play()
-    }
-    
-    func playInview(inView: UIView, withURL url: NSURL) {
-        contentURL = url
-        playInView(inView)
-    }
-    
     /**
      添加视频通知事件
      */
@@ -131,6 +128,9 @@ class WLVideoPlayerView: UIView {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playerWillEnterFullscreen"), name: WLPlayerWillEnterFullscreenNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playerWillExitFullscreen"), name: WLPlayerWillExitFullscreenNotification, object: nil)
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playerDidPlayToEndTime"), name: WLPlayerDidPlayToEndTimeNotification, object: nil)
+
     }
     /**
      当播放视频进入播放状态且用户自定义了视频控制面板的时候调动，
@@ -178,6 +178,33 @@ class WLVideoPlayerView: UIView {
         playerControlHandler.customControlView = customControlView
         
     }
+    //========================================================
+    // MARK: 功能方法
+    //========================================================
+    func play() {
+        player.play()
+        if let placeholderView = self.placeholderView {
+            placeholderView.frame = self.bounds
+            self.addSubview(placeholderView)
+            self.bringSubviewToFront(placeholderView)
+        }
+        setupCustomControlView()
+        player.view.frame = self.bounds
+    }
+    
+    func playInView(inView: UIView) {
+        self.inView = inView
+        self.removeFromSuperview()
+        self.frame = inView.bounds
+        inView.addSubview(self)
+        play()
+    }
+    
+    func playInview(inView: UIView, withURL url: NSURL) {
+        contentURL = url
+        playInView(inView)
+    }
+    
     /**
      判断当前view是否显示在屏幕上
      */
@@ -215,7 +242,11 @@ class WLVideoPlayerView: UIView {
         
         NSNotificationCenter.defaultCenter().postNotificationName(WLPlayerCustomControlViewStateDidChangeNotification, object: nil)
     }
-
+    
+    //========================================================
+    // MARK: 旋转\全屏控制方法
+    //========================================================
+    
     /**
     每当设备横屏的时候调用
     让视频播放器进入横屏的全屏播放状态
@@ -282,7 +313,10 @@ class WLVideoPlayerView: UIView {
                 }
             }
     }
+    
+    //========================================================
     // MARK: - 监听方法/回调方法
+    //========================================================
     
     /**
     定时器回调方法，在视频播放的时候，每一秒调用一次，
@@ -307,8 +341,9 @@ class WLVideoPlayerView: UIView {
             removeProgressTimer()
             break
         case .Interrupted:
+            print("Interrupted")
             break
-        case .SeekingForward, .SeekingBackward:
+        default:
             removeProgressTimer()
             break
         }
@@ -365,4 +400,7 @@ class WLVideoPlayerView: UIView {
         }
     }
     
+    func playerDidPlayToEndTime() {
+        self.removeFromSuperview()
+    }
 }

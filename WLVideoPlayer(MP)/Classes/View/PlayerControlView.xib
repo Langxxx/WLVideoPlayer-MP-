@@ -51,20 +51,20 @@
                             <rect key="frame" x="50" y="0.0" width="450" height="40"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_leftslider" translatesAutoresizingMaskIntoConstraints="NO" id="Xw3-SZ-0Fk">
-                                    <rect key="frame" x="0.0" y="19" width="0.0" height="2"/>
+                                    <rect key="frame" x="0.0" y="19" width="10" height="2"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" id="Zxc-tp-4KM"/>
+                                        <constraint firstAttribute="width" constant="10" id="Zxc-tp-4KM"/>
                                     </constraints>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_thumb" translatesAutoresizingMaskIntoConstraints="NO" id="q3q-ha-ad1">
-                                    <rect key="frame" x="0.0" y="17" width="10" height="6"/>
+                                    <rect key="frame" x="10" y="15" width="10" height="10"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="10" id="ERg-3c-Bda"/>
-                                        <constraint firstAttribute="height" constant="6" id="giy-LZ-e6L"/>
+                                        <constraint firstAttribute="height" constant="10" id="giy-LZ-e6L"/>
                                     </constraints>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_rightslider" translatesAutoresizingMaskIntoConstraints="NO" id="gYv-dj-cde">
-                                    <rect key="frame" x="10" y="19" width="435" height="2"/>
+                                    <rect key="frame" x="0.0" y="19" width="450" height="2"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00 / 00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lSq-NG-rgG">
                                     <rect key="frame" x="345" y="20" width="100" height="20"/>
@@ -77,21 +77,22 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_playableslider" translatesAutoresizingMaskIntoConstraints="NO" id="Uwb-67-Sbg">
-                                    <rect key="frame" x="0.0" y="20" width="0.0" height="1"/>
+                                    <rect key="frame" x="0.0" y="20" width="40" height="1"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" id="CBx-rN-AgY"/>
+                                        <constraint firstAttribute="width" constant="40" id="CBx-rN-AgY"/>
                                     </constraints>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <gestureRecognizers/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="gYv-dj-cde" secondAttribute="trailing" constant="5" id="Gzf-IO-MtS"/>
+                                <constraint firstAttribute="trailing" secondItem="gYv-dj-cde" secondAttribute="trailing" id="Gzf-IO-MtS"/>
                                 <constraint firstItem="q3q-ha-ad1" firstAttribute="centerY" secondItem="mJB-bX-QoB" secondAttribute="centerY" id="IQh-44-kWO"/>
                                 <constraint firstItem="Xw3-SZ-0Fk" firstAttribute="centerY" secondItem="mJB-bX-QoB" secondAttribute="centerY" id="KAJ-dF-miq"/>
                                 <constraint firstItem="gYv-dj-cde" firstAttribute="centerY" secondItem="mJB-bX-QoB" secondAttribute="centerY" id="T8V-Bc-bfr"/>
                                 <constraint firstItem="gYv-dj-cde" firstAttribute="height" secondItem="Xw3-SZ-0Fk" secondAttribute="height" id="ZaL-w9-1gh"/>
                                 <constraint firstItem="gYv-dj-cde" firstAttribute="leading" secondItem="q3q-ha-ad1" secondAttribute="trailing" id="aRG-7x-w0G"/>
+                                <constraint firstItem="gYv-dj-cde" firstAttribute="leading" secondItem="mJB-bX-QoB" secondAttribute="leading" id="cXM-fw-HDA"/>
                                 <constraint firstAttribute="bottom" secondItem="lSq-NG-rgG" secondAttribute="bottom" id="ggn-Pb-F0H"/>
                                 <constraint firstItem="Uwb-67-Sbg" firstAttribute="leading" secondItem="mJB-bX-QoB" secondAttribute="leading" id="mB1-NC-Xyt"/>
                                 <constraint firstItem="Xw3-SZ-0Fk" firstAttribute="leading" secondItem="mJB-bX-QoB" secondAttribute="leading" id="otg-dg-bQH"/>
@@ -99,6 +100,11 @@
                                 <constraint firstItem="Uwb-67-Sbg" firstAttribute="centerY" secondItem="mJB-bX-QoB" secondAttribute="centerY" id="xPV-yA-6PW"/>
                                 <constraint firstItem="q3q-ha-ad1" firstAttribute="leading" secondItem="Xw3-SZ-0Fk" secondAttribute="trailing" id="zG8-5w-qSr"/>
                             </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="aRG-7x-w0G"/>
+                                </mask>
+                            </variation>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.79555532094594594" colorSpace="calibratedWhite"/>
@@ -142,6 +148,7 @@
                 <outlet property="pauseBtn" destination="8Oj-aI-INx" id="Ase-mc-L9E"/>
                 <outlet property="playableSliderConstraint" destination="CBx-rN-AgY" id="U3V-lH-fRF"/>
                 <outlet property="sliderView" destination="mJB-bX-QoB" id="4uh-X6-A4N"/>
+                <outlet property="thumbImageView" destination="q3q-ha-ad1" id="77y-aC-t4D"/>
                 <outlet property="timeLabel" destination="lSq-NG-rgG" id="y3k-5N-eGy"/>
                 <outlet property="topView" destination="Lad-rG-Z4V" id="Enj-pc-3bl"/>
                 <outlet property="topViewWidthConstraint" destination="Sqj-bA-2c5" id="iiI-l1-zHX"/>

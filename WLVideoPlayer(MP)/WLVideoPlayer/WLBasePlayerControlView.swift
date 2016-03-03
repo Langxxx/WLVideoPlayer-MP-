@@ -29,7 +29,15 @@ class WLBasePlayerControlView: UIView {
     /// 视频总长度
     var totalDuration: NSTimeInterval = 0
     // 视频当前时间
-    var currentTime: NSTimeInterval = 0
+    var currentTime: NSTimeInterval = 0 {
+        didSet {
+            if currentTime + 1 >= totalDuration {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC)), dispatch_get_main_queue()) { () -> Void in
+                    NSNotificationCenter.defaultCenter().postNotificationName(WLPlayerDidPlayToEndTimeNotification, object: nil)
+                }
+            }
+        }
+    }
     
     /**
      让这个view变得透明并且能够响应点击事件
