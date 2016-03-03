@@ -30,6 +30,9 @@ class MediaController: UIViewController {
     lazy var controlView = {
         return NSBundle.mainBundle().loadNibNamed("PlayerControlView", owner: nil, options: nil).last as! PlayerControlView
     }()
+    lazy var controlDemoView = {
+        return PlayerDemoControlView()
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,7 +84,7 @@ class MediaController: UIViewController {
         playingCellIndexPath = tableView.indexPathForCell(playingCell)
         
         playingPlayerView = WLVideoPlayerView(url: NSURL(string: urlStr)!)
-        playingPlayerView?.customControlView = controlView
+        playingPlayerView?.customControlView = controlDemoView
         playingPlayerView?.placeholderView = UIImageView(image: UIImage(named: "placeholder"))
         playingPlayerView?.playInView(inView)
     }

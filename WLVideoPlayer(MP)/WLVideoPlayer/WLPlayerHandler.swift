@@ -107,6 +107,7 @@ extension WLPlayerHandler: WLPlayerControlViewDelegate {
         }else {
             player.pause()
         }
+        pauseBtn.selected = !pauseBtn.selected
         addAutoHiddenTimer()
     }
     
