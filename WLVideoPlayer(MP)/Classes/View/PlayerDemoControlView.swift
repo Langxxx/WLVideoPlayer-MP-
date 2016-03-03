@@ -159,16 +159,18 @@ class PlayerDemoControlView: WLBasePlayerControlView {
      - parameter playableDuration:    已经缓冲的时长
      */
     override func updateProgress(currentPlaybackTime: NSTimeInterval, duration: NSTimeInterval, playableDuration: NSTimeInterval) {
-        totalDuration = duration // 记录视频总长度
-        let finishPercent = CGFloat(currentPlaybackTime / duration)
-        let playablePercent = CGFloat(playableDuration / duration)
-        leftSliderImageView.snp_updateConstraints(closure: { (make) -> Void in
-            make.width.equalTo(finishPercent * sliderView.bounds.size.width)
-        })
-        playableImageView.snp_updateConstraints { (make) -> Void in
-            make.width.equalTo(playablePercent * sliderView.bounds.size.width)
+        
+        updateSliderViewWhenPlaying(currentPlaybackTime, duration: duration, playableDuration: playableDuration) { (finishPercent, playablePercent) -> Void in
+            
+            self.leftSliderImageView.snp_updateConstraints(closure: { (make) -> Void in
+                make.width.equalTo(finishPercent * self.sliderView.bounds.size.width)
+            })
+            
+            self.playableImageView.snp_updateConstraints { (make) -> Void in
+                make.width.equalTo(playablePercent * self.sliderView.bounds.size.width)
+            }
         }
-        timeLabel.text = String(format: "%02d:%02d / %02d:%02d", Int(currentPlaybackTime)/60, Int(currentPlaybackTime)%60, Int(duration)/60, Int(duration)%60)
+        timeLabel.text = timeText
     }
     /**
      每次播放器的播放模式发生变化的生活调用(进入\退出全屏\旋转等)
@@ -234,24 +236,17 @@ class PlayerDemoControlView: WLBasePlayerControlView {
      用来设置新的播放进度(时间)
      */
     func onSliderPan(sender: UIPanGestureRecognizer) {
-        
-        if sender.state == .Began { //开始拖动
-            delegate?.beganSlideOnPlayerControlView?(self)
-        }else if sender.state == .Ended { //拖动结束
-            delegate?.playerControlView?(self, endedSlide: currentTime)
-        }
-        
-        let point = sender.translationInView(sliderView)
-        //相对位置清0
-        sender.setTranslation(CGPointZero, inView: sliderView)
-        leftSliderImageView.snp_updateConstraints { (make) -> Void in
-            make.width.equalTo(leftSliderImageView.bounds.width+point.x)
-            
+        updateSliderViewWhenSlide(sliderView, sender: sender) { (point) -> Void in
+            self.leftSliderImageView.snp_updateConstraints { (make) -> Void in
+                // 这里使用bounds不合理
+                make.width.equalTo(self.leftSliderImageView.bounds.width+point.x)
+            }
         }
         
         let leftPercent = NSTimeInterval(leftSliderImageView.bounds.width / sliderView.bounds.width)
         currentTime = leftPercent * totalDuration
-        timeLabel.text = String(format: "%02d:%02d / %02d:%02d", Int(currentTime)/60, Int(currentTime)%60, Int(totalDuration)/60, Int(totalDuration)%60)
+        timeLabel.text = timeText
+    
     }
 
 }

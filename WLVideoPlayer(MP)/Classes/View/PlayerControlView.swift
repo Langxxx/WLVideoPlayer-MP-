@@ -76,12 +76,14 @@ class PlayerControlView: WLBasePlayerControlView {
      - parameter playableDuration:    已经缓冲的时长
      */
     override func updateProgress(currentPlaybackTime: NSTimeInterval, duration: NSTimeInterval, playableDuration: NSTimeInterval) {
-        totalDuration = duration // 记录视频总长度
-        let finishPercent = CGFloat(currentPlaybackTime / duration)
-        let playablePercent = CGFloat(playableDuration / duration)
-        currentSliderConstraint.constant = finishPercent * sliderView.bounds.size.width
-        playableSliderConstraint.constant = playablePercent * sliderView.bounds.size.width
-        timeLabel.text = String(format: "%02d:%02d / %02d:%02d", Int(currentPlaybackTime)/60, Int(currentPlaybackTime)%60, Int(duration)/60, Int(duration)%60)
+        
+        updateSliderViewWhenPlaying(currentPlaybackTime, duration: duration, playableDuration: playableDuration) { (finishPercent, playablePercent) -> Void in
+            
+            self.currentSliderConstraint.constant = finishPercent * self.sliderView.bounds.size.width
+            self.playableSliderConstraint.constant = playablePercent * self.sliderView.bounds.size.width
+            
+        }
+        timeLabel.text = timeText
     }
     
     /**
@@ -90,28 +92,17 @@ class PlayerControlView: WLBasePlayerControlView {
      */
     func onSliderPan(sender: UIPanGestureRecognizer) {
         
-        if sender.state == .Began { //开始拖动
-            delegate?.beganSlideOnPlayerControlView?(self)
-        }else if sender.state == .Ended { //拖动结束
-            delegate?.playerControlView?(self, endedSlide: currentTime)
+        updateSliderViewWhenSlide(sliderView, sender: sender) { (point) -> Void in
+            self.currentSliderConstraint.constant += point.x
+            if self.currentSliderConstraint.constant < 0 {
+                self.currentSliderConstraint.constant = 0
+            }else if self.currentSliderConstraint.constant > self.sliderView.bounds.width {
+                self.currentSliderConstraint.constant = self.sliderView.bounds.width
+            }
         }
-        
-        let point = sender.translationInView(sliderView)
-        //相对位置清0
-        sender.setTranslation(CGPointZero, inView: sliderView)
-        
-        currentSliderConstraint.constant += point.x
-        if currentSliderConstraint.constant < 0 {
-            currentSliderConstraint.constant = 0
-        }else if currentSliderConstraint.constant > sliderView.bounds.width {
-            currentSliderConstraint.constant = sliderView.bounds.width
-        }
-        
         let finishPercent = NSTimeInterval(currentSliderConstraint.constant / sliderView.bounds.width)
         currentTime = finishPercent * totalDuration
-        timeLabel.text = String(format: "%02d:%02d / %02d:%02d", Int(currentTime)/60, Int(currentTime)%60, Int(totalDuration)/60, Int(totalDuration)%60)
-        
-        
+        timeLabel.text = timeText
     }
     /**
      每次播放器的播放模式发生变化的生活调用(进入\退出全屏\旋转等)

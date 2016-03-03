@@ -111,14 +111,14 @@ extension WLPlayerHandler: WLPlayerControlViewDelegate {
         addAutoHiddenTimer()
     }
     
-
+    
     /**
-    WLBasePlayerControlView的代理方法，
-    当点击进入/退出全屏的时候调用
-    用来进入/退出全屏
-    - parameter playerControlView: 用户自定义的那个控制面板
-    - parameter pauseBtn:          全屏/退出全屏按钮
-    */
+     WLBasePlayerControlView的代理方法，
+     当点击进入/退出全屏的时候调用
+     用来进入/退出全屏
+     - parameter playerControlView: 用户自定义的那个控制面板
+     - parameter pauseBtn:          全屏/退出全屏按钮
+     */
     func playerControlView(playerControlView: WLBasePlayerControlView, enterFullScreenBtnDidClik enterFullScreenBtn: UIButton) {
         
         assert(player != nil, "player is nil")

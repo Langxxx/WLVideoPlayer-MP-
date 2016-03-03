@@ -80,4 +80,7 @@ class WLBasePlayerControlView: UIView {
     }
 
 }
+extension WLBasePlayerControlView: UpdateProgressProtocol {
+    
+}
 
