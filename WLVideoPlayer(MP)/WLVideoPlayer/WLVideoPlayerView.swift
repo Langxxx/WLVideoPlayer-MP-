@@ -48,11 +48,8 @@ class WLVideoPlayerView: UIView {
     // ps: 因为swift中暂时不支持(或者作者本人没找到)像oc中这样的写法:UIView<someProtocol> *obj
     // 也就是说不支持定义一个变量，让他是UIView的子类，并且这个View必须遵守某个协议,妥协之下，便设置了一个类似于接口的一个父类
     /// 用户自定义控制界面
-    var customControlView: WLBasePlayerControlView? {
-        didSet {
-            player.controlStyle = .None
-        }
-    }
+    var customControlView: WLBasePlayerControlView?
+    
     /// 用户自定义视频控制面板自动隐藏的时间
     var customControlViewAutoHiddenInterval: NSTimeInterval = 3 {
         didSet {
@@ -91,7 +88,9 @@ class WLVideoPlayerView: UIView {
     //========================================================
     init(url : NSURL?) {
         contentURL = url
+        
         player = MPMoviePlayerController(contentURL: contentURL)
+        player.controlStyle = .None
         
         super.init(frame: defaultFrame)
         
