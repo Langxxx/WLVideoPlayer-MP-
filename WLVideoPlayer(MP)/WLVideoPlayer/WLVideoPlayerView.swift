@@ -30,7 +30,7 @@ enum WLVideoPlayerViewFullscreenModel {
 class WLVideoPlayerView: UIView {
     
     // MARK: - 属性
-
+    
     //========================================================
     // MARK: 接口属性
     //========================================================
@@ -48,8 +48,11 @@ class WLVideoPlayerView: UIView {
     // ps: 因为swift中暂时不支持(或者作者本人没找到)像oc中这样的写法:UIView<someProtocol> *obj
     // 也就是说不支持定义一个变量，让他是UIView的子类，并且这个View必须遵守某个协议,妥协之下，便设置了一个类似于接口的一个父类
     /// 用户自定义控制界面
-    var customControlView: WLBasePlayerControlView?
-    
+    var customControlView: WLBasePlayerControlView? {
+        didSet {
+            player.controlStyle = .None
+        }
+    }
     /// 用户自定义视频控制面板自动隐藏的时间
     var customControlViewAutoHiddenInterval: NSTimeInterval = 3 {
         didSet {
@@ -79,8 +82,8 @@ class WLVideoPlayerView: UIView {
     
     /// WLVideoPlayerView这个对象的父视图
     private weak var inView: UIView!
-  
-
+    
+    
     // MARK: - 方法
     
     //========================================================
@@ -88,9 +91,7 @@ class WLVideoPlayerView: UIView {
     //========================================================
     init(url : NSURL?) {
         contentURL = url
-        
         player = MPMoviePlayerController(contentURL: contentURL)
-        player.controlStyle = .None
         
         super.init(frame: defaultFrame)
         
@@ -104,6 +105,8 @@ class WLVideoPlayerView: UIView {
     deinit {
         print("WLVideoPlayerView===deinit")
         NSNotificationCenter.defaultCenter().removeObserver(self)
+        removeProgressTimer()
+        playerControlHandler.removeAutoHiddenTimer()
     }
     /**
      为了防止定制器造成循环引用
@@ -127,9 +130,9 @@ class WLVideoPlayerView: UIView {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playerWillEnterFullscreen"), name: WLPlayerWillEnterFullscreenNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playerWillExitFullscreen"), name: WLPlayerWillExitFullscreenNotification, object: nil)
-
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playerDidPlayToEndTime"), name: WLPlayerDidPlayToEndTimeNotification, object: nil)
-
+        
     }
     /**
      当播放视频进入播放状态且用户自定义了视频控制面板的时候调动，
@@ -263,7 +266,7 @@ class WLVideoPlayerView: UIView {
      退出全屏播放状态
      */
     func toPortrait() {
-
+        
         if fullscreenModel == .LandscapeWhenInFullscreen && isFullscreen  {
             
             changePlayerScreenState(UIApplication.sharedApplication().keyWindow!, needRotation: nil, isfullscreen: nil)
@@ -310,7 +313,7 @@ class WLVideoPlayerView: UIView {
                     NSNotificationCenter.defaultCenter().postNotificationName(
                         isfullscreen! ? WLPlayerDidEnterFullscreenNotification : WLPlayerDidExitFullscreenNotification, object: nil)
                 }
-            }
+        }
     }
     
     //========================================================
