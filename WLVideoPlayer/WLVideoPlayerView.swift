@@ -107,6 +107,7 @@ class WLVideoPlayerView: UIView {
         NSNotificationCenter.defaultCenter().removeObserver(self)
         removeProgressTimer()
         playerControlHandler.removeAutoHiddenTimer()
+        player.pause()
     }
     /**
      为了防止定制器造成循环引用
